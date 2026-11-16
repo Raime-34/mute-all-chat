@@ -1,3 +1,6 @@
+/**
+ * Метод, который модифицирует контекстное меню (ПКМ по пользователю) юзеры.
+ */
 MuteAllChatPlugin.prototype.modifyContextMenu = function () {
   const Slider = BdApi.Webpack.getModule(
     (exp) =>
@@ -7,6 +10,12 @@ MuteAllChatPlugin.prototype.modifyContextMenu = function () {
     { searchExports: true },
   );
 
+  /**
+   * Ищет определенный элменет с указанным id у детей node
+   * @param { object | Array } node Элемент меню или массив детей
+   * @param { string } id Идентификатор искомого элемента
+   * @returns { object | null } Найденный элемент. Возвращает null, если он не найден
+   */
   function findItem(node, id) {
     if (!node) return null;
     if (Array.isArray(node)) {
@@ -22,9 +31,9 @@ MuteAllChatPlugin.prototype.modifyContextMenu = function () {
   this.unpatchMenu = BdApi.ContextMenu.patch("user-context", (menu, props) => {
     const userId = props.user?.id;
     if (!Slider || !userId || userId == this.currentUserId) return;
-    const volumeItem = findItem(menu.props.children, "user-volume");
+    // const volumeItem = findItem(menu.props.children, "user-volume");
     const muteItem = findItem(menu.props.children, "mute");
-    if (!volumeItem) return;
+    if (!muteItem) return;
 
     // const customeSlider = BdApi.React.createElement(volumeItem.type, {
     //   ...volumeItem.props,
@@ -49,7 +58,9 @@ MuteAllChatPlugin.prototype.modifyContextMenu = function () {
     const [on, setOn] = BdApi.React.useState(
       () => this.ensureUser(userId).muted === true,
     );
-    const customeSwitch = BdApi.React.createElement(muteItem.type, {
+    // Кастомный чекбокс, которым можно отметить
+    // пользователя, как модерируемого со стороны плагина
+    const customSwitch = BdApi.React.createElement(muteItem.type, {
       ...muteItem.props,
       id: "mute-all-chat-mute",
       label: "Mute",
@@ -72,6 +83,6 @@ MuteAllChatPlugin.prototype.modifyContextMenu = function () {
     const children = Array.isArray(menu.props.children)
       ? menu.props.children
       : [menu.props.children];
-    menu.props.children = [...children, customeSwitch];
+    menu.props.children = [...children, customSwitch];
   });
 };
