@@ -32,6 +32,12 @@ MuteAllChatPlugin.prototype.ensureUser = function (userId) {
   return this.config.users[userId];
 };
 
+MuteAllChatPlugin.prototype.ensureRestrictedGamesList = function () {
+  if (!this.config.restrictedGames) {
+    this.config.restrictedGames = new Set();
+  }
+};
+
 /**
  * Проверяет, отмечен ли пользователь галочкой Mute в конфиге.
  * @param { string } userId Пользователь, которого проверяют

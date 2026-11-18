@@ -19,7 +19,7 @@ MuteAllChatPlugin.prototype.syncGameMutes = function () {
     const activities = this.PresenceStore.getActivities(userId) ?? [];
     const playingHatedGame = activities.some((activity) => {
       const applicationId = activity?.application_id ?? activity?.applicationId;
-      return String(applicationId ?? "") === this.hatedGame;
+      return this.config.restrictedGames.has(String(applicationId ?? ""));
     });
     const shouldMute = this.isMarkedForMute(userId) && playingHatedGame;
 

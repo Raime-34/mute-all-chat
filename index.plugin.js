@@ -11,6 +11,7 @@ class MuteAllChatPlugin {
     this.config = this.loadConfig() ?? {
       users: {},
     };
+    this.config.restrictedGames = new Set(this.config.restrictedGames ?? []);
 
     this.hatedGame = "356888453796986880";
 

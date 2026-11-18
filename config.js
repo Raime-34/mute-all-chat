@@ -1,5 +1,7 @@
 MuteAllChatPlugin.prototype.saveConfig = function () {
-  BdApi.Data.save(this.pluginName, "config", this.config);
+  const copy = structuredClone(this.config);
+  copy.restrictedGames = [...copy.restrictedGames];
+  BdApi.Data.save(this.pluginName, "config", copy);
 };
 
 MuteAllChatPlugin.prototype.loadConfig = function () {
