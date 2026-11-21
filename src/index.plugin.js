@@ -22,6 +22,7 @@ class MuteAllChatPlugin {
     this.UserStore = BdApi.Webpack.getStore("UserStore");
 
     this.mutedByPlugin = new Set();
+    this.duckedByPlugin = new Set();
     this.currentUserId = this.UserStore.getCurrentUser().id;
   }
 }
